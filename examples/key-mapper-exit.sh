@@ -36,12 +36,18 @@ fi
 if [ "$blank" == "screenunblank" ]; then
 	tvservice -p
 	[ -e $modefile ] && rm $modefile
-	(sleep 1; fbset -move up -step 0) &
+	# Especially on RasPi 3B+ and 4B  when in X it
+	# seems needed to jitter fb a bit to redisplay
+	fbset -move up -step 0
+	fbset -match	
+	fbset -a -move up -step 0
+	fbset -a -match	
 fi
 
 # additional useful commands related to screen blanking
 # (sometimes) works to repaint the buffer
-#	fbset -move up -step 0
+#	fbset -a -move up -step 0
+#	fbset -a -match
 # Hide and Shows blinking cursor 	
 #	sudo echo -e '\x1b[?25l' > /dev/tty1
 #	sudo echo -e '\x1b[?25h' > /dev/tty1
