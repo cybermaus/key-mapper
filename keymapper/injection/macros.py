@@ -499,6 +499,40 @@ class _Macro:
         self.tasks.append(ifeq)
 
 
+    def exitpgm(self, var1, var2=None):
+        """Retrieve dynamic macro from exit program.
+
+        Parameters
+        ----------
+        var1 : variable | string | number
+        var2 : variable | string | number
+        """
+        import subprocess
+        import re
+
+        async def exitpgm(_):
+            exitpgm = 'key-mapper-exit'
+            exit_var1 = macro_variables[var1]
+            if exit_var1==None:
+                exit_var1 = str(var1)
+            exit_var2 = macro_variables[var2]
+            if exit_var2==None:
+                exit_var2 = str(var2)
+            try:
+                logger.debug('Exit program call "%s %s %s"', exitpgm, exit_var1, exit_var2)
+                result = subprocess.check_output([exitpgm, exit_var1, exit_var2]).decode().strip('/n')
+                logger.debug('Exit program result "%s"', result)
+#                exit_macro=parse(result,self.mapping)
+#                if isinstance(exit_macro, _Macro):
+#                    self.child_macros.append(exit_macro)
+#                else:
+#                    logger.debug('Invalid Exit program result: "%s"', result)
+            except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
+                logger.error('Exit program failure "%s"', str(ex))
+
+        self.tasks.append(exitpgm)
+
+
 def _extract_params(inner):
     """Extract parameters from the inner contents of a call.
 
@@ -601,6 +635,7 @@ def _parse_recurse(macro, mapping, macro_instance=None, depth=0):
             'wheel': (macro_instance.wheel, 2, 2),
             'ifeq': (macro_instance.ifeq, 3, 4),
             'set': (macro_instance.set, 2, 2),
+            'exitpgm': (macro_instance.exitpgm, 1, 2),
         }
 
         function = functions.get(call)
