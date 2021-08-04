@@ -57,10 +57,10 @@ fi
 
 # goto camera presets
 if [ "$1" == "$cam01" ]; then
-	host=$cam1ip
+	host=$cam01
 fi
 if [ "$1" == "$cam02" ]; then
-	host=$cam2ip
+	host=$cam02
 fi
 
 # if a preset command for either camera 
