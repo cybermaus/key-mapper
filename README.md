@@ -1,3 +1,13 @@
+## my_version
+
+This fork is merely to keep my own mods organized. If you want to use it, no problem
+the main branch is unmodified from the original, the my_version one is how I run it
+Installation instructions below updated for my_version
+
+Mods:
+- added exitpgm macro function
+- example exitpgm shell for Dahua camera conrol from a numeric keypad.
+
 <p align="center"><img src="data/key-mapper.svg" width=100/></p>
 
 <h1 align="center">Key Mapper</h1>
@@ -13,30 +23,16 @@
 
 ## Installation
 
-##### Manjaro/Arch
-
-```bash
-pacaur -S key-mapper-git
-```
-
-##### Ubuntu/Debian
-
-Get a .deb file from the [release page](https://github.com/sezanzeb/key-mapper/releases)
-or install the latest changes via:
+##### Raspberry Pi OS 
+Former Raspian, probably also works on Ubuntu & Debian, except for the use of the `tvservice` 
+call to blank the screen
 
 ```bash
 sudo apt install git python3-setuptools
-git clone https://github.com/sezanzeb/key-mapper.git
+sudo apt install gettext 
+git clone my_version https://github.com/cybermaus/key-mapper.git
 cd key-mapper; ./scripts/build.sh
 sudo apt install ./dist/key-mapper-1.0.0.deb
-```
-
-##### pip
-
-```bash
-sudo pip install git+https://github.com/sezanzeb/key-mapper.git
-sudo systemctl enable key-mapper
-sudo systemctl restart key-mapper
 ```
 
 If it doesn't seem to install, you can also try `sudo python3 setup.py install`
