@@ -1,0 +1,6 @@
+# add this to crontab to auto schedule off/on the screen
+# m  h  w  m  y	minute, hour, weekday, month, year
+# *  *  *  *  *	user	command to be executed
+  0  8  *  *  *	pi	key-mapper-exit any screenunblank
+  0 18  *  *  *	pi	key-mapper-exit any screenblank
+
