@@ -1,8 +1,9 @@
 ## my_version
+This fork is merely to keep my own mods organized. If you want to use it, no problem!<br/>
+The main branch is to track the origin and should never receive commits directly from me.<br/>
+The my_version branch is how I run it
 
-This fork is merely to keep my own mods organized. If you want to use it, no problem
-the main branch is unmodified from the original, the my_version one is how I run it
-Installation instructions below updated for my_version
+Installation instructions below updated for my_version.
 
 Mods:
 - added exitpgm macro function
