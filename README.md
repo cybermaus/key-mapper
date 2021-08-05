@@ -31,7 +31,7 @@ call to blank the screen
 ```bash
 sudo apt install git python3-setuptools
 sudo apt install gettext 
-git clone my_version https://github.com/cybermaus/key-mapper.git
+git clone -b my_version https://github.com/cybermaus/key-mapper.git
 cd key-mapper; ./scripts/build.sh
 sudo apt install ./dist/key-mapper-1.0.0.deb
 ```
