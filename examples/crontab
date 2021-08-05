@@ -2,5 +2,10 @@
 # m  h  w  m  y	minute, hour, weekday, month, year
 # *  *  *  *  *	user	command to be executed
   0  8  *  *  *	pi	key-mapper-exit any screenunblank
+  1  8  *  *  *	pi	key-mapper-exit mon01 restart
+  1  8  *  *  *	pi	key-mapper-exit cam01 preset1
+  1  8  *  *  *	pi	key-mapper-exit cam02 preset1
   0 18  *  *  *	pi	key-mapper-exit any screenblank
+  1 18  *  *  *	pi	key-mapper-exit cam01 auto
+  1 18  *  *  *	pi	key-mapper-exit cam02 auto
 

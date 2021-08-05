@@ -36,7 +36,7 @@ fi
 if [ "$blank" == "screenunblank" ]; then
 	tvservice -p
 	[ -e $modefile ] && rm $modefile
-	# Especially on RasPi 3B+ and 4B  when in X it
+	# Especially on RasPi 3B+ and 4B when in X it
 	# seems needed to jitter fb a bit to redisplay
 	fbset -move up -step 0
 	fbset -match	
@@ -61,23 +61,37 @@ fi
 #	tvservice -p
 
 
-# goto camera presets
-if [ "$1" == "$cam01" ]; then
-	host=$cam01
-fi
-if [ "$1" == "$cam02" ]; then
-	host=$cam02
+# if mon01 command 
+if [ "$1" == "mon01" ]; then
+
+	# Restart Camplayer command
+	if [ "$2" == "restart"  -o "$2" == "preset9" ]; then
+		sudo systemctl restart camplayer
+	fi
 fi
 
-# if a preset command for either camera 
+
+# if camera command for either camera
 if [ "$1" == "cam01" -o "$1" == "cam02" ]; then
-action=$2
-if [ "${action%%[0-9]*}" == "preset" ]; then
-	preset=${action//[!0-9]/}
-	url="http://${host}/cgi-bin/ptz.cgi?action=start&channel=0&code=GotoPreset&arg1=0&arg2=${preset}&arg3=0"
-	curl --digest -n -s -g -m 1 -- "${url}"
+	[ "$1" == "cam01" ] && host=$cam01
+	[ "$1" == "cam02" ] && host=$cam02
+
+	# Goto Preset command
+	action=$2
+	if [ "${action%%[0-9]*}" == "preset" ]; then
+		preset=${action//[!0-9]/}
+		url="http://${host}/cgi-bin/ptz.cgi?action=start&channel=0&code=GotoPreset&arg1=0&arg2=${preset}&arg3=0"
+		curl --digest -n -s -g -m 1 -- "${url}"
+	fi
+
+	# Restart Auto-Tracking command
+	# note that Preset 10 is the same as Preset 1, but with auto-tracking activated
+	if [ "$2" == "auto" ]; then
+		url="http://${host}/cgi-bin/ptz.cgi?action=start&channel=0&code=GotoPreset&arg1=0&arg2=10&arg3=0"
+		curl --digest -n -s -g -m 1 -- "${url}"
+	fi
 fi
-fi
+
 
 #echo $key-mapper-macro
 
