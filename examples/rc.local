@@ -1,0 +1,3 @@
+# Add this to /etc/rc.local to autoload when not starting X
+(sleep 2; sudo -u pi key-mapper-control --command autoload) &
+
