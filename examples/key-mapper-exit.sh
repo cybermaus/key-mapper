@@ -67,7 +67,7 @@ fi
 if [ "$1" == "mon01" ]; then
 
 	# Quit Camplayer command
-	if [ "$2" == "restart"  -o "$2" == "preset8" ]; then
+	if [ "$2" == "stop"  -o "$2" == "preset8" ]; then
 		macro='k(KEY_Q)'
 		#systemctl stop camplayer
 	fi
