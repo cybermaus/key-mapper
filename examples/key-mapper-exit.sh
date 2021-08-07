@@ -39,9 +39,9 @@ fi
 # Unblank screen
 if [ "$blank" == "screenunblank" ]; then
 	tvservice -p
-	[ -e $modefile ] && rm $modefile
+	[ -e $modefile ] && sudo -n rm -f $modefile
 	# Especially on RasPi 3B+ and 4B when in X it
-	# seems needed to jitter fb a bit to redisplay
+	# seems needed to prod fb a bit to redisplay
 	fbset -move up -step 0
 	fbset -a -move up -step 0
 fi
@@ -65,14 +65,7 @@ fi
 
 # if mon01 command 
 if [ "$1" == "mon01" ]; then
-
-	# Quit Camplayer command
-	if [ "$2" == "stop"  -o "$2" == "preset8" ]; then
-		#macro='k(KEY_Q)'
-		echo 'Stopping camplayer'
-		sudo -n systemctl stop camplayer
-	fi
-
+	
 	# Restart Camplayer command
 	if [ "$2" == "restart"  -o "$2" == "preset9" ]; then
 		# should not need sudo, as this runs as root
@@ -80,11 +73,40 @@ if [ "$1" == "mon01" ]; then
 		sudo -n systemctl restart camplayer
 	fi
 
+	# Quit Camplayer command
+	if [ "$2" == "stop"  -o "$2" == "preset8" ]; then
+		macro='k(KEY_Q)'
+		#echo 'Stopping camplayer'
+		#sudo -n systemctl stop camplayer
+	fi
+
 	# Remove cache, force Cache rebuild on next restart
 	if [ "$2" == "cache"  -o "$2" == "preset7" ]; then
 		echo 'Rebuilding camplayer cache'
 		rm -f /home/pi/.camplayer/cache/streaminfo
 	fi
+
+	# Power off RasPi completely
+	if [ "$2" == "poweroff"  -o "$2" == "preset6" ]; then
+		echo 'Powering off RasPi'
+		[ -e $modefile ] && sudo -n rm -f $modefile
+		sudo -n systemctl stop camplayer
+		sudo -n poweroff
+	fi
+		
+	# Channels 0 (auto), 1, 2, 3, 4) are camera display selections
+	if [ "$2" == "auto" ]; then
+		macro='k(KEY_0)'
+	elif [ "$2" == "preset1" ]; then
+		macro='k(KEY_1)'
+	elif [ "$2" == "preset2" ]; then
+		macro='k(KEY_2)'
+	elif [ "$2" == "preset3" ]; then
+		macro='k(KEY_3)'
+	elif [ "$2" == "preset4" ]; then
+		macro='k(KEY_4)'
+	fi
+
 fi
 
 
