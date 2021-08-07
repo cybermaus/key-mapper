@@ -68,14 +68,22 @@ if [ "$1" == "mon01" ]; then
 
 	# Quit Camplayer command
 	if [ "$2" == "stop"  -o "$2" == "preset8" ]; then
-		macro='k(KEY_Q)'
-		#systemctl stop camplayer
+		#macro='k(KEY_Q)'
+		echo 'Stopping camplayer'
+		sudo -n systemctl stop camplayer
 	fi
 
 	# Restart Camplayer command
 	if [ "$2" == "restart"  -o "$2" == "preset9" ]; then
 		# should not need sudo, as this runs as root
-		systemctl restart camplayer
+		echo 'Restarting camplayer'
+		sudo -n systemctl restart camplayer
+	fi
+
+	# Remove cache, force Cache rebuild on next restart
+	if [ "$2" == "cache"  -o "$2" == "preset7" ]; then
+		echo 'Rebuilding camplayer cache'
+		rm -f /home/pi/.camplayer/cache/streaminfo
 	fi
 fi
 
