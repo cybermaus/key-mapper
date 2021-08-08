@@ -8,14 +8,15 @@ modefile='/tmp/screenblankmode'
 mode='-p'
 host=''
 macro=''
+timeout='300'
 
 
 # Camera devices to send CURL to should best resolve in DNS, straight from 
 # their names as mentioned in KEY-MAPPER
 # User and Passwords for those devices are best stored in system .netrc file
 # where CURL will find them automatically.
-cam01='cam01'
-cam02='cam02'
+cam01='192.168.3.103'
+cam02='192.168.3.68'
 user=''
 pass=''
 
@@ -121,13 +122,22 @@ if [ "$1" == "cam01" -o "$1" == "cam02" ]; then
 		# reminder: user/pass are not encoded here but done by --digest -n
 		preset=${action//[!0-9]/}
 		url="http://${host}/cgi-bin/ptz.cgi?action=start&channel=0&code=GotoPreset&arg1=0&arg2=${preset}&arg3=0"
+		#echo "Preset ${url}"
+		curl --digest -n -s -g -m 1 "${url}"
+		# Also set channel 0 (=1-1) as auto-homing position
+		url="http://${host}/cgi-bin/configManager.cgi?action=setConfig&Ptz[0].Homing[0]=0&Ptz[0].Homing[1]=${timeout}"
 		curl --digest -n -s -g -m 1 -- "${url}"
 	fi
 
 	# Restart Auto-Tracking command
 	# note that Preset 10 is the same as Preset 1, but with auto-tracking activated
 	if [ "$2" == "auto" ]; then
+		# Goto Preset 10 as Auto Track position
 		url="http://${host}/cgi-bin/ptz.cgi?action=start&channel=0&code=GotoPreset&arg1=0&arg2=10&arg3=0"
+		#echo "Preset ${url}"
+		curl --digest -n -s -g -m 1 -- "${url}"
+		# Also set channel 9 (=10-1) as auto-homing position
+		url="http://${host}/cgi-bin/configManager.cgi?action=setConfig&Ptz[0].Homing[0]=9&Ptz[0].Homing[1]=${timeout}"
 		curl --digest -n -s -g -m 1 -- "${url}"
 	fi
 fi
